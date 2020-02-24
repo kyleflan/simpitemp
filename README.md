@@ -17,9 +17,9 @@ straightforward.
 
 There are three pins on the chip, VCC, ground and data. 
 
-**V**CC -> Pin 2 (5V)
-**G**round -> Pin 6 (GND)
-**D**ata -> Pin 7 (GPIO4)
+* **V**CC -> Pin 2 (5V)
+* **G**round -> Pin 6 (GND)
+* **D**ata -> Pin 7 (GPIO4)
 
 A la:
 
