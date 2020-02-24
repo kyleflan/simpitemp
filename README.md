@@ -68,7 +68,10 @@ Navigate to interfaces and enable SPI and I2C, reboot
 
 `mkdir ./redis_data`
 
-`docker run --name redis-01 --restart always -p 6379:6379 -v /home/pi/app/redis_data:/data -d redis redis-server --appendonly yes`
+`docker run --name redis-01 --restart always -p 6379:6379 -v /home/pi/simpitemp/redis_data:/data -d redis redis-server --appendonly yes`
+
+> If simpitemp is installed somehwere other than the pi user's home directory,
+> update the path to the `-v` arg
 
 ### Start the app
 
@@ -84,9 +87,9 @@ Navigate to interfaces and enable SPI and I2C, reboot
 > accessible via the pi, edit `webapp.py` and remove `host=0.0.0.0` on the
 > last line.
 
-Go to this URL: http://<PI IP Address>:8080 you should see something like this:
+Go to this URL: http://\<Pi IP Address\>:8080 you should see something like this:
 
-![Simpitemp Screenshot](./screenshot.png?raw=True Screenshot)
+![Simpitemp Screenshot](screenshot.png)
 
 ### Startup Across Reboots
 
@@ -94,7 +97,7 @@ To have the app persist across reboots, do the following:
 
 `pm2 startup`
 
-Copy and past the generated command to create a startup script, then run:
+Copy and paste the generated command to create a startup script, then run:
 
 `pm2 save`
 
