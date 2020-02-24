@@ -1,0 +1,96 @@
+{% extends "bootstrap/base.html" %}
+{% block title %}Konnor's room temp and humidity{% endblock %}
+{% block scripts %}
+    {{super ()}}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script>
+        var ctx= document.getElementById("tempChart").getContext("2d");
+    var chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: [
+                {% for item in temp_labels %}
+                "{{ item }} ",
+                {% endfor %}
+                ]
+            ,
+            datasets: [{
+                label: 'Temperature °F',
+				yAxisID: 'Temperature',
+                backgroundColor: 'FireBrick',
+                borderColor: 'FireBrick',
+                fill: false,
+				data: [
+						{% for item in temp_values %}
+						"{{ item }} ",
+						{% endfor %}
+					]
+            },{
+				label: 'Humidity %',
+				yAxisID: 'Humidity',
+				backgroundColor: 'DodgerBlue',
+			    borderColor: 'DodgerBlue',
+				fill: false,
+				data: [
+					{% for item in hum_values %}
+					"{{ item }} ",
+					{% endfor %}
+				]
+			}]
+        },
+
+		// Configure axes
+        options: {
+            scales: {
+                yAxes: [{
+					id: 'Temperature',
+                    scaleLabel: {
+                        labelString: 'Temperature °F',
+                        display: true
+                    },
+					type: 'linear',
+					position: 'left',
+                    ticks: {
+                        suggestedMin: 60,
+                        suggestedMax: 85
+                    }
+                }, {
+					id: 'Humidity',
+                    scaleLabel: {
+                        labelString: 'Humidity %',
+                        display: true
+                    },
+					type: 'linear',
+					position: 'right',
+                    ticks: {
+                        suggestedMin: 20,
+                        suggestedMax: 100
+                    }
+				}]
+            }
+        }
+    });
+    </script>
+{% endblock %}
+{% block content %}
+<div class="container">
+    <div>
+        <div class="form-group"><h1>Sim<span style="font-weight:bold"><span style="color: FireBrick">p</span><span style="color: DodgerBlue">i</span></span>temp Readings</h1></div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-6">
+                <div class="panel panel-default">
+                    <div class="panel-body" style="background: FireBrick; color: white; font-weight: bold">Avg. Temperature: {{avg_temperature}} °F</div>
+                    <div class="panel-footer">Inst. Temperature: {{inst_temperature}} °F</div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+                <div class="panel panel-default">
+                    <div class="panel-body" style="background: DodgerBlue; color: white; font-weight: bold">Avg. Humidity: {{avg_humidity}} %</div>
+                    <div class="panel-footer">Inst. Humidity: {{inst_humidity}} %</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div><canvas id="tempChart"></canvas></div>
+</div>
+{% endblock %}

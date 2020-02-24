@@ -1,0 +1,7 @@
+redis
+flask
+flask-bootstrap
+adafruit-circuitpython-dht
+adafruit-blinka
+numpy
+pandas

@@ -1,0 +1,14 @@
+{
+    "apps" : [
+    {
+        "name" : "webapp",
+        "script" : "python3 /home/pi/simpitemp/webapp.py",
+        "max_memory_restart": "300M",
+        "log_date_format": "YYYY-MM-DD HH:mm Z"
+    }, {
+        "name": "stats_collector",
+        "script": "python3 /home/pi/simpitemp/stats_collector.py",
+        "max_memory_restart": "300M",
+        "log_date_format": "YYYY-MM-DD HH:mm Z"
+    }]
+}
