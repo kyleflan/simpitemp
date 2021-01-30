@@ -5,3 +5,4 @@ adafruit-circuitpython-dht
 adafruit-blinka
 numpy
 pandas
+pytz

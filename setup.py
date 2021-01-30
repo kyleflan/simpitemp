@@ -1,11 +1,11 @@
 from setuptools import setup
 
-REQUIREMENTS = [i.stip() for in in open('requirements.txt').readlines()]
+REQUIREMENTS = [i.strip() for i in open('requirements.txt').readlines()]
 
 setup(
     name='simpitemp',
     version='0.1.0',
-    packages=['TimeLimitedRedisDict'],
+#    packages=['TimeLimitedRedisDict'],
     url='https://github.com/kyleflan/simpitemp',
     license='Apache License, Version 2.0',
     author='kyleflan',

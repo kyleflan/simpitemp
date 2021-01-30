@@ -34,9 +34,11 @@ update `stats_collector.py` and change `board.D4` to `board.DX`.
 
 ## Let's get started
 
+> Note: Raspbian Buster or later is required
+
 ### Install Git and Python Utils (and vim if you're tinkering)
 
-`sudo apt-get install git-core python3 build-essential python-dev python3-pip vim`
+`sudo apt-get install git-core python3 build-essential python-dev python3-pip libatlas-base-dev libgpiod2 npm vim`
 
 ### Clone repo
 
@@ -44,19 +46,15 @@ update `stats_collector.py` and change `board.D4` to `board.DX`.
 
 ### Install Docker
 
-`curl -fsSL https://get.docker.com -o get-docker.sh`
+	curl -fsSL https://get.docker.com -o get-docker.sh
+	sh get-docker.sh
+	sudo usermod -aG docker $USER
 
-`sh get-docker.sh`
-
-`sudo usermod -aG docker $USER`
-
-### Install Libs and  NPM
-
-`sudo apt-get install libgpiod2 npm`
+Log out and back in to register the group (usermod) change.
 
 ### Install pm2
 
-`npm install pm2 -g`
+`sudo npm install pm2 -g`
 
 ### Enable SPI and I2C
 
@@ -66,12 +64,16 @@ Navigate to interfaces and enable SPI and I2C, reboot
 
 ### Start Redis
 
-`mkdir ./redis_data`
-
-`docker run --name redis-01 --restart always -p 6379:6379 -v /home/pi/simpitemp/redis_data:/data -d redis redis-server --appendonly yes`
+	mkdir ./redis_data
+	docker run --name redis-01 --restart always -p 6379:6379 -v /home/pi/simpitemp/redis_data:/data -d redis redis-server --appendonly yes
 
 > If simpitemp is installed somehwere other than the pi user's home directory,
 > update the path to the `-v` arg
+
+### Install
+
+	cd ./simpitemp
+	pip3 install .
 
 ### Start the app
 
