@@ -44,26 +44,25 @@ def return_temp_hum():
     df_temp.sort_index(inplace=True)
     df_temp['temp'] = df_temp['temp'].apply(lambda x: x + temp_calibration)
 
-    removed_outliers_hum = df_hum['hum'].between(df_hum['hum'].tail(10).mean() - 5.0, 
-                                                 df_hum['hum'].tail(10).mean() + 5.0)
-    removed_outliers_temp = df_temp['temp'].between(df_temp['temp'].tail(10).mean() - 5.0,
-                                                    df_temp['temp'].tail(10).mean() + 5.0)
+    # removing outliers causes issues if hum and temp don't have the same outliers (i.e. the graph
+    # will not appropriately plot the temp/hum since some hum may be dropped by the temp isn't)
+    #removed_outliers_hum = df_hum['hum'].between(df_hum['hum'].tail(10).mean() - 5.0, 
+    #                                             df_hum['hum'].tail(10).mean() + 5.0)
+    #removed_outliers_temp = df_temp['temp'].between(df_temp['temp'].tail(10).mean() - 5.0,
+    #                                                df_temp['temp'].tail(10).mean() + 5.0)
 
     # remove dropped labels from both df's
-    df_hum.drop(df_hum[~removed_outliers_hum].index, inplace=True)
-    df_temp.drop(df_temp[~removed_outliers_temp].index, inplace=True)
+    #df_hum.drop(df_hum[~removed_outliers_hum].index, inplace=True)
+    #df_temp.drop(df_temp[~removed_outliers_temp].index, inplace=True)
 
-    temp_labels = list(df_temp.index.tz_localize(system_tz).tz_convert(display_tz))
-    hum_labels = list(df_hum.index.tz_localize(system_tz).tz_convert(display_tz))
+    temp_labels = list(df_temp.index.tz_localize(system_tz).tz_convert(display_tz).strftime('%H:%M:%S'))
+    hum_labels = list(df_hum.index.tz_localize(system_tz).tz_convert(display_tz).strftime('%H:%M:%S'))
 
     temp_values = list(df_temp['temp'])
     hum_values = list(df_hum['hum'])
 
     temp_avg = df_temp['temp'].mean()
     hum_avg = df_hum['hum'].mean()
-
-    # format temp labels (for better rendering on the chart)
-    formatted_temp_labels = [label.strftime('%H:%M:%S') for label in temp_labels]
 
     # get "instantaneous" metrics, which are the values at the latest index
     temp_inst = df_temp.loc[df_temp.index.max()].squeeze()
@@ -75,7 +74,7 @@ def return_temp_hum():
             avg_humidity='%0.2f' % hum_avg,
             inst_humidity='%0.2f' % hum_inst,
             timestamp=timestamp,
-            temp_labels=formatted_temp_labels, 
+            temp_labels=temp_labels, 
             temp_values=temp_values,
             hum_values=hum_values)
 
