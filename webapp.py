@@ -19,6 +19,8 @@ tlrd_hum = TimeLimitedRedisDict(redis_key='humidity')
 system_tz = time.tzname[time.daylight]
 display_tz = 'US/Central'
 
+temp_calibration = -1.50
+
 # default route
 @app.route('/')
 def return_temp_hum():
@@ -40,11 +42,12 @@ def return_temp_hum():
                            index=pd.to_datetime(pd.Series(tlrd_temp.d.keys())),
                            columns=['temp'])
     df_temp.sort_index(inplace=True)
+    df_temp['temp'] = df_temp['temp'].apply(lambda x: x + temp_calibration)
 
-    removed_outliers_hum = df_hum['hum'].between(df_hum['hum'].mean() - 5.0, 
-                                                 df_hum['hum'].mean() + 5.0)
-    removed_outliers_temp = df_temp['temp'].between(df_temp['temp'].mean() - 5.0,
-                                                    df_temp['temp'].mean() + 5.0)
+    removed_outliers_hum = df_hum['hum'].between(df_hum['hum'].tail(10).mean() - 5.0, 
+                                                 df_hum['hum'].tail(10).mean() + 5.0)
+    removed_outliers_temp = df_temp['temp'].between(df_temp['temp'].tail(10).mean() - 5.0,
+                                                    df_temp['temp']..tail(10).mean() + 5.0)
 
     # remove dropped labels from both df's
     df_hum.drop(df_hum[~removed_outliers_hum].index, inplace=True)
